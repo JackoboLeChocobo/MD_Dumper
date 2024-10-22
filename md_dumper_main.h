@@ -504,7 +504,8 @@ int Detect_Device(void)
     }
 
 	int ready=0;
-	for(int id=0;id<5;id++)
+	int id=0;
+	for(id=0;id<5;id++)
 		{
 		/* Claim interface */
 		if(libusb_kernel_driver_active(handle, id) == 1)
