@@ -503,43 +503,40 @@ int Detect_Device(void)
         return 1;
     }
 
-    /* Claim interface #0. */
-
-    if(libusb_kernel_driver_active(handle, 0) == 1)
-    {
-        SDL_Log("Kernel Driver Active");
-        if(libusb_detach_kernel_driver(handle, 0) == 0)
-            SDL_Log("Kernel Driver Detached!");
-        else
-        {
-            SDL_Log("Couldn't detach kernel driver!\n");
-            libusb_close(handle);
-        }
-    }
-    res = libusb_claim_interface(handle, 0);
-    //SDL_Log("Test 1 : %d\n",res);
-    if (res != 0)
-    {
-        if(libusb_kernel_driver_active(handle, 1) == 1)
-        {
-            SDL_Log("Kernel Driver Active");
-            if(libusb_detach_kernel_driver(handle, 1) == 0)
-                SDL_Log("Kernel Driver Detached!");
-            else
-            {
-                SDL_Log("Couldn't detach kernel driver!\n");
-                libusb_close(handle);
-            }
-        }
-        res = libusb_claim_interface(handle, 1);
-        //SDL_Log("Test 2 : %d\n",res);
-        if (res != 0)
-        {
-            SDL_Log("Error claiming interface.\n");
-            return 1;
-        }
-    }
-
+	int ready=0;
+	for(int id=0;id<5;id++)
+		{
+		/* Claim interface */
+		if(libusb_kernel_driver_active(handle, 0) == 1)
+			{
+			SDL_Log("Kernel Driver Active");
+			if(libusb_detach_kernel_driver(handle, 0) == 0)
+				SDL_Log("Kernel Driver Detached!");
+			else
+				{
+				SDL_Log("Couldn't detach kernel driver!\n");
+				libusb_close(handle);
+				}
+			}
+		res = libusb_claim_interface(handle, 0);
+		if (res == 0)
+			{
+			ready=1;
+			break;
+			}
+		}	
+        
+    if(ready==0)
+		{
+		SDL_Log("Error claiming interface.\n");
+        return 1;
+		}
+	else
+		{
+		SDL_Log("Interface %d claimed.\n",id);
+        return 1;
+		}
+		
     // Clean Buffer
     for (i = 0; i < 64; i++)
     {
