@@ -519,6 +519,7 @@ int Detect_Device(void)
 				}
 			}
 		res = libusb_claim_interface(handle, id);
+		SDL_Log("ID=%d - res result = %d\n",id,res);
 		if (res == 0)
 			{
 			ready=1;
