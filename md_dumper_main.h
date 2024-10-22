@@ -505,7 +505,7 @@ int Detect_Device(void)
 
 	int ready=0;
 	int id=0;
-	for(id=0;id<5;id++)
+	for(id=0;id<16;id++)
 		{
 		/* Claim interface */
 		if(libusb_kernel_driver_active(handle, id) == 1)
@@ -536,7 +536,6 @@ int Detect_Device(void)
 	else
 		{
 		SDL_Log("Interface %d claimed.\n",id);
-        return 1;
 		}
 		
     // Clean Buffer
